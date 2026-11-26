@@ -1,0 +1,10 @@
+{
+  "name": "quiet-market-brandbook",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Конструктор брендбука «Тихий Рынок»: чистые HTML/CSS/JS без сборки",
+  "scripts": {
+    "start": "npx --yes serve -l 8080 .",
+    "serve:python": "python -m http.server 8080"
+  }
+}

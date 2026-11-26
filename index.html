@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Конструктор брендбука: бриф, палитра с проверкой контраста, типографика и макеты с печатью в PDF.">
+  <meta name="theme-color" content="#15171c">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23237bff'/%3E%3Ctext x='16' y='23' font-family='sans-serif' font-size='19' font-weight='bold' fill='%23ffffff' text-anchor='middle'%3EQ%3C/text%3E%3C/svg%3E">
+  <title>Тихий Рынок — Конструктор брендбука</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/common.css">
+</head>
+<body>
+
+  <div id="storage-message" class="storage-message" hidden></div>
+
+  <noscript>
+    <div class="storage-message">Для работы конструктора нужен включённый JavaScript.</div>
+  </noscript>
+
+  <!-- Остаётся на экране, только если модули не загрузились (обычно при открытии через file://). -->
+  <div id="boot-hint" class="storage-message">
+    Конструктор не запустился. Откройте папку через локальный сервер — например,
+    <code>python -m http.server</code> — и зайдите на <code>http://localhost:8000</code>.
+    Двойной клик по index.html браузер блокирует из-за ограничений ES-модулей.
+  </div>
+
+  <header class="site-header no-print">
+    <h1 class="logo">
+      <!-- Встроенный SVG логотип -->
+      <img src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='40'%3E%3Crect width='100%25' height='100%25' fill='%2315171c'/%3E%3Ctext x='50%25' y='50%25' fill='%23ffffff' font-family='sans-serif' font-size='14' font-weight='bold' dominant-baseline='middle' text-anchor='middle'%3EQuiet Market%3C/text%3E%3C/svg%3E" alt="Тихий Рынок" class="logo-img">
+    </h1>
+    <nav class="main-nav" aria-label="Разделы брендбука">
+      <a href="#brief">Бриф</a>
+      <a href="#color">Цвет</a>
+      <a href="#typography">Типографика</a>
+      <a href="#layouts">Макеты</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- 1. БРИФ -->
+    <section id="brief" class="section">
+      <h2>Бриф бренда</h2>
+      <p class="section-desc">Задайте основу: кто вы и о чём говорите.</p>
+      <div class="form-grid">
+        <label>Название *
+          <input type="text" id="input-name" required aria-describedby="error-name" placeholder="Тихий Рынок">
+          <span class="error-text" id="error-name" hidden>Пожалуйста, введите название</span>
+        </label>
+        <label>Слоган *
+          <input type="text" id="input-slogan" required aria-describedby="error-slogan" placeholder="Цени форму. Выбирай осознанно.">
+          <span class="error-text" id="error-slogan" hidden>Пожалуйста, введите слоган</span>
+        </label>
+        <label>Аудитория
+          <textarea id="input-audience" rows="2" placeholder="Коллекционеры и игроки 18–30..."></textarea>
+        </label>
+        <label>Цель
+          <textarea id="input-goal" rows="2" placeholder="Находить скины с уникальным дизайном..."></textarea>
+        </label>
+        <label>Характер (3 слова)
+          <input type="text" id="input-character" placeholder="Точный, Сдержанный, Надёжный">
+        </label>
+      </div>
+    </section>
+
+    <!-- 2. ЦВЕТ -->
+    <section id="color" class="section">
+      <h2>Цвет</h2>
+      <p class="section-desc">Выберите палитру — она сразу применится ко всему интерфейсу и макетам.</p>
+      
+      <div id="palette-list" class="palette-list" role="radiogroup" aria-label="Выбор палитры"></div>
+
+      <div id="custom-colors-panel" class="custom-colors-panel" hidden>
+        <h3>Настройка своей палитры</h3>
+        <p class="section-desc">Кликните на квадрат, чтобы открыть палитру, или введите HEX-код вручную.</p>
+        
+        <div class="color-inputs-grid">
+          <label>Фон страницы (bg)
+            <div class="color-input-wrap">
+              <input type="color" id="color-bg" data-key="bg">
+              <input type="text" id="hex-bg" data-key="bg" maxlength="7">
+            </div>
+          </label>
+          <label>Основной текст (text)
+            <div class="color-input-wrap">
+              <input type="color" id="color-text" data-key="text">
+              <input type="text" id="hex-text" data-key="text" maxlength="7">
+            </div>
+          </label>
+          <label>Акцент (accent)
+            <div class="color-input-wrap">
+              <input type="color" id="color-accent" data-key="accent">
+              <input type="text" id="hex-accent" data-key="accent" maxlength="7">
+            </div>
+          </label>
+          <label>Фон карточек (surface)
+            <div class="color-input-wrap">
+              <input type="color" id="color-surface" data-key="surface">
+              <input type="text" id="hex-surface" data-key="surface" maxlength="7">
+            </div>
+          </label>
+          <label>Рамки (border)
+            <div class="color-input-wrap">
+              <input type="color" id="color-border" data-key="border">
+              <input type="text" id="hex-border" data-key="border" maxlength="7">
+            </div>
+          </label>
+          <label>Кнопка (btn)
+            <div class="color-input-wrap">
+              <input type="color" id="color-btnBg" data-key="btnBg">
+              <input type="text" id="hex-btnBg" data-key="btnBg" maxlength="7">
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <div class="contrast-panel">
+        <h3>Контраст палитры</h3>
+        <p class="section-desc">Проверка пар «текст / фон» по WCAG: AA — 4.5:1, для крупного текста — 3:1.</p>
+        <ul class="contrast-list" id="contrast-list"></ul>
+      </div>
+    </section>
+
+    <!-- 3. ТИПОГРАФИКА -->
+    <section id="typography" class="section">
+      <h2>Типографика</h2>
+      <div class="typo-controls">
+        <label>Шрифт
+          <select id="font-select"></select>
+        </label>
+        <label>Размер (px)
+          <input type="range" id="font-size-range" min="16" max="48" step="1">
+          <span id="font-size-value"></span>
+        </label>
+        <label>Насыщенность
+          <select id="font-weight-select">
+            <option value="400">Обычный (Regular)</option>
+            <option value="700">Жирный (Bold)</option>
+          </select>
+        </label>
+        <label>Свой текст для пробы
+          <input type="text" id="preview-text-input" placeholder="Редкий скин — это не только про редкость.">
+        </label>
+      </div>
+      <div id="typo-preview" class="typo-preview" aria-live="polite"></div>
+    </section>
+
+    <!-- 4. МАКЕТЫ И ПРЕДПРОСМОТР -->
+    <section id="layouts" class="section">
+      <h2>Макеты</h2>
+      <p class="section-desc">Так бренд выглядит на постере и в соцсетях.</p>
+
+      <div class="form-grid" style="margin-bottom: 1.5rem;">
+        <label>Ссылка на фоновое изображение (URL)
+          <input type="url" id="input-bg-image" placeholder="https://example.com/image.jpg">
+          <span class="section-desc" style="font-size: 0.8rem; margin-top: 0.2rem;">Оставьте пустым для использования цветов палитры.</span>
+        </label>
+      </div>
+
+      <fieldset class="layout-toggle no-print">
+        <legend>Композиция</legend>
+        <div class="layout-toggle-options">
+          <label><input type="radio" name="layout" value="minimal" checked> Минимализм</label>
+          <label><input type="radio" name="layout" value="bold"> Акцент</label>
+        </div>
+      </fieldset>
+
+      <div class="preview-grid">
+        <!-- ПОСТЕР -->
+        <article class="poster" id="poster" aria-label="Постер бренда">
+          <svg class="poster-visual" viewBox="0 0 600 340" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Заглушка визуала скина">
+            <rect class="psv-bg" width="600" height="340" rx="12"/>
+            <g class="psv-grid" aria-hidden="true">
+              <path d="M0 68H600M0 136H600M0 204H600M0 272H600"/>
+            </g>
+            <circle class="psv-orbit" cx="452" cy="104" r="118"/>
+            <circle class="psv-orbit psv-orbit--inner" cx="452" cy="104" r="74"/>
+            <rect class="psv-diamond" x="196" y="86" width="168" height="168" rx="26" transform="rotate(45 280 170)"/>
+            <rect class="psv-diamond-core" x="230" y="120" width="100" height="100" rx="16" transform="rotate(45 280 170)"/>
+            <path class="psv-wave" d="M36 300H112L146 266H190L222 300H274L306 266H350L382 300H434L466 266H510L544 300H580"/>
+            <circle class="psv-dot" cx="452" cy="104" r="7"/>
+            <circle class="psv-dot psv-dot--soft" cx="108" cy="98" r="4"/>
+            <circle class="psv-dot psv-dot--soft" cx="80" cy="128" r="4"/>
+            <circle class="psv-dot psv-dot--soft" cx="136" cy="128" r="4"/>
+          </svg>
+          <h3 class="poster-name"></h3>
+          <p class="poster-slogan"></p>
+          <div class="poster-footer">
+            <span class="poster-character"></span>
+            <span class="poster-mark" aria-hidden="true">Q</span>
+          </div>
+        </article>
+
+        <!-- КАРТОЧКА СОЦСЕТЕЙ -->
+        <article class="social-card" id="social-card" aria-label="Карточка для соцсетей">
+          <div class="card-bg"></div>
+          <div class="card-content">
+            <h3 class="card-name"></h3>
+            <p class="card-slogan"></p>
+            <span class="card-character"></span>
+            <svg class="card-skin" viewBox="0 0 160 160" width="80" height="80" role="img" aria-label="Заглушка визуала скина">
+              <rect class="csk-bg" width="160" height="160" rx="18"/>
+              <circle class="csk-orbit" cx="118" cy="44" r="42"/>
+              <rect class="csk-diamond" x="44" y="44" width="72" height="72" rx="13" transform="rotate(45 80 80)"/>
+              <path class="csk-line" d="M18 134H40L50 122H62L72 134H94L104 122H116L126 134H142"/>
+            </svg>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ИТОГОВЫЙ БРЕНДБУК (для печати) -->
+    <section id="final" class="section">
+      <h2>Брендбук</h2>
+      <dl class="brand-summary">
+        <dt>Название</dt><dd id="summary-name"></dd>
+        <dt>Слоган</dt><dd id="summary-slogan"></dd>
+        <dt>Аудитория</dt><dd id="summary-audience"></dd>
+        <dt>Цель</dt><dd id="summary-goal"></dd>
+        <dt>Характер</dt><dd id="summary-character"></dd>
+        <dt>Палитра</dt><dd id="summary-palette"></dd>
+        <dt>Шрифт</dt><dd id="summary-font"></dd>
+      </dl>
+      <div class="palette-chips" id="palette-chips"></div>
+      <div class="print-models" id="print-models"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer no-print">
+    <p>Настройки сохраняются <strong>только в этом браузере</strong>. Ссылка не переносит изменения другому человеку. <span id="save-status" aria-live="polite"></span></p>
+    <div class="actions">
+      <button type="button" id="btn-reset">Сбросить</button>
+      <button type="button" id="btn-tokens">Скачать токены</button>
+      <button type="button" id="btn-print" class="btn-primary">Печать / PDF</button>
+    </div>
+  </footer>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
